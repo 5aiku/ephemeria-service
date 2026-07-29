@@ -1,0 +1,52 @@
+#
+# Ephimeria API Server configuration file
+#
+
+[server]
+
+# API listening port
+port = 3000
+
+# Development mode: true - enables CORS for any port for localhost,
+# Sets log level to debug, unless otherwise specified
+dev_mode = true
+
+# Level of logging (overrides dev_mode default 'Debug' value)
+# Possible values: 'debug', 'info', 'warning', 'error'
+# If not specified, default is 'info'
+log_level = "warning"
+
+# Format of logs
+# Possible values: 'plain', 'json'
+log_format = "plain"
+
+
+
+[minecraft]
+
+# Current season game version
+game_version = "1.20.1"
+
+# Recommended JRE version
+java_version = "17"
+
+# Path to prepared Minecraft instance
+instance_path = "./instances/default.zip"
+
+
+
+[cors]
+
+# List of URLs allowed
+# If dev_mode is true, all ports of localhost are allowed
+allowed_origins = [
+    "http://localhost:5173"
+]
+
+
+
+[rcon]
+enabled = false
+host = "127.0.0.1"
+port = 25575
+password = ""
