@@ -1,18 +1,27 @@
 mod config;
+mod state;
+mod router;
+mod api;
+mod utils;
+
+use std::sync::Arc;
 
 use config::{Config, LogFormat};
+use crate::router::*;
+use crate::state::*;
+use crate::utils::*;
 
 use axum::{routing::get, Router};
-use tower_http::trace::TraceLayer;
 
 use tracing::{debug, info, warn, error};
 use tracing_subscriber::fmt;
 
 #[tokio::main]
 async fn main() {
-    let config = Config::from_file("./config.toml").expect("Could not read configuration file");
-
+    let config = Config::from_file("./config.toml").expect("Error reading config");
+    let port = config.server.port;
     let filter = config.server.log_level.as_str();
+
     match config.server.log_format {
         LogFormat::Plain => {
             let subscriber = fmt()
@@ -30,15 +39,23 @@ async fn main() {
         }
     }
 
-    info!("Successfully loaded config");
+    info!("Config loaded");
     debug!("{:?}", config);
 
-    let app = Router::new()
-        .route("/", get(|| async { "Hello, world!" }))
-        .layer(TraceLayer::new_for_http());
+    let instance_path = &config.minecraft.instance_path;
 
-    let addr = format!("0.0.0.0:{}", config.server.port);
-    let listener = tokio::net::TcpListener::bind(addr.clone()).await.unwrap();
+    info!("Calculating hash for instance file: {:?}", instance_path);
+    let instance_hash = calculate_file_hash(instance_path)
+        .expect("Failed to calculate instance hash. Does the file exist?");
+    info!("Instance hash calculated: {}", instance_hash);
 
-    axum::serve(listener, app).await.unwrap();
+    let state = Arc::new(ApiState { config, instance_hash });
+    let router = create_router(state);
+
+    let addr = format!("0.0.0.0:{}", port);
+    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
+
+    info!("Starting server on {}", addr);
+
+    axum::serve(listener, router).await.unwrap();
 }
