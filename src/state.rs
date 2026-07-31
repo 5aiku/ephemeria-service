@@ -1,9 +1,12 @@
+use crate::config::{Config, SeasonManifest};
 use std::sync::Arc;
-use crate::config::Config;
+use std::path::PathBuf;
 
-pub struct ApiState {
+pub struct AppState {
     pub config: Config,
-    pub instance_hash: String,
+    pub season_path: PathBuf,
+    pub season_manifest: SeasonManifest,
+    pub mods_hash: String,
 }
 
-pub type SharedState = Arc<ApiState>;
+pub type SharedState = Arc<AppState>;

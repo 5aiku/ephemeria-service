@@ -5,6 +5,5 @@ log_format = "plain"
 log_level = "info"
 
 [minecraft]
-game_version = "1.20.1"
-java_version = "17"
-instance_path = "./instance/default.zip"
+sync_dir = "./seasons"
+active_season = "kinetic"

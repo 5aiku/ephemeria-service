@@ -6,15 +6,17 @@ use serde_json::json;
 
 
 pub async fn manifest(State(state): State<SharedState>) -> impl IntoResponse {
-    let server = &state.config.minecraft;
+    let season = &state.season_manifest;
 
     Json(json!(
         {
-            "game_version": server.game_version,
-            "java_version": server.java_version,
-            "instance_hash": state.instance_hash,
-            "server_ip": "mc.ephemeria.fun",
-            "server_port": 25565,
+            "season_name": season.name,
+            "season_description": season.description,
+            "game_version": season.game_version,
+            "java_version": season.java_version,
+            "mods_hash": state.mods_hash,
+            "server_ip": season.server_ip,
+            "server_port": season.server_port,
         }
     ))
 }

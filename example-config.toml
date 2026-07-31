@@ -31,7 +31,7 @@ game_version = "1.20.1"
 java_version = "17"
 
 # Path to prepared Minecraft instance
-instance_path = "./instances/default.zip"
+mods_path = "./sync/.zip"
 
 
 

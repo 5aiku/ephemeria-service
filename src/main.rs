@@ -42,14 +42,11 @@ async fn main() {
     info!("Config loaded");
     debug!("{:?}", config);
 
-    let instance_path = &config.minecraft.instance_path;
+    let active_season = &config.minecraft.active_season;
+    let season_path = config.minecraft.sync_dir.join(active_season);
+    let (season_manifest, mods_hash) = load_season(&season_path);
 
-    info!("Calculating hash for instance file: {:?}", instance_path);
-    let instance_hash = calculate_file_hash(instance_path)
-        .expect("Failed to calculate instance hash. Does the file exist?");
-    info!("Instance hash calculated: {}", instance_hash);
-
-    let state = Arc::new(ApiState { config, instance_hash });
+    let state = Arc::new(AppState { config, season_path, season_manifest, mods_hash });
     let router = create_router(state);
 
     let addr = format!("0.0.0.0:{}", port);

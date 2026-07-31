@@ -32,14 +32,23 @@ pub struct CorsConfig {
 
 #[derive(Debug, Deserialize)]
 pub struct MinecraftConfig {
-    pub game_version: String,
-    pub java_version: String,
-    #[serde(default = "default_instance_path")]
-    pub instance_path: PathBuf,
+    pub active_season: String,
+    #[serde(default = "default_sync_path")]
+    pub sync_dir: PathBuf,
 }
 
-fn default_instance_path() -> PathBuf {
-    PathBuf::from("./instance/default.zip")
+#[derive(Debug, Deserialize)]
+pub struct SeasonManifest {
+    pub name: String,
+    pub description: String,
+    pub game_version: String,
+    pub java_version: String,
+    pub server_ip: String,
+    pub server_port: u16,
+}
+
+pub fn default_sync_path() -> PathBuf {
+    PathBuf::from("./sync")
 }
 
 #[derive(Debug, Deserialize)]
