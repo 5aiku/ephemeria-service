@@ -3,7 +3,7 @@ use serde::Deserialize;
 
 #[derive(Debug)]
 pub struct Config {
-    pub server: ServerConfig,
+    pub api: ApiConfig,
     pub minecraft: MinecraftConfig,
     pub cors: CorsConfig,
     pub rcon: RconConfig,
@@ -18,7 +18,7 @@ impl Config {
 }
 
 #[derive(Debug)]
-pub struct ServerConfig {
+pub struct ApiConfig {
     pub port: u16,
     pub dev_mode: bool,
     pub log_level: LogLevel,
@@ -122,7 +122,7 @@ impl Default for LogFormat {
 #[derive(Debug, Deserialize)]
 struct RawConfig {
     #[serde(default)]
-    server: RawServerConfig,
+    api: RawApiConfig,
     minecraft: MinecraftConfig,
     #[serde(default)]
     cors: RawCorsConfig,
@@ -132,14 +132,14 @@ struct RawConfig {
 
 #[derive(Debug, Deserialize)]
 #[serde(default)]
-struct RawServerConfig {
+struct RawApiConfig {
     port: u16,
     dev_mode: bool,
     log_level: Option<LogLevel>,
     log_format: LogFormat,
 }
 
-impl Default for RawServerConfig {
+impl Default for RawApiConfig {
     fn default() -> Self {
         Self {
             port: 3000,
@@ -157,9 +157,9 @@ struct RawCorsConfig {
 
 impl RawConfig {
     fn into_config(self) -> Config {
-        let dev_mode = self.server.dev_mode;
+        let dev_mode = self.api.dev_mode;
 
-        let log_level = self.server.log_level.unwrap_or_else(|| {
+        let log_level = self.api.log_level.unwrap_or_else(|| {
             if dev_mode { LogLevel::Debug } else { LogLevel::Info }
         });
 
@@ -175,11 +175,11 @@ impl RawConfig {
         });
 
         Config {
-            server: ServerConfig {
-                port: self.server.port,
+            api: ApiConfig {
+                port: self.api.port,
                 dev_mode,
                 log_level,
-                log_format: self.server.log_format,
+                log_format: self.api.log_format,
             },
             minecraft: self.minecraft,
             cors: CorsConfig { allowed_origins },

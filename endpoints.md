@@ -6,7 +6,7 @@ Returns information about the server and game instance in JSON format
 {
   "game_version": "1.20.1",
   "java_version": "17",
-  "instance_hash": "sha256:...",
+  "mods_hash": "sha256:...",
   "server_ip": "mc.ephemeria.fun",
   "server_port": 25565
 }

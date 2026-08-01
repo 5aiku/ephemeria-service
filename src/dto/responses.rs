@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 #[derive(Debug, Serialize)]
-pub struct Manifest {
+pub struct ManifestResponse {
     pub season_name: String,
     pub season_description: String,
     pub game_version: String,
@@ -12,7 +12,7 @@ pub struct Manifest {
 }
 
 #[derive(Debug, Serialize)]
-pub struct ServerStatus {
+pub struct ServerStatusResponse {
     pub online: bool,
     pub players: u16,
     pub max_players: u16,
@@ -21,7 +21,7 @@ pub struct ServerStatus {
 }
 
 #[derive(Debug, Serialize)]
-pub struct LauncherVersion {
+pub struct LauncherVersionResponse {
     pub latest_version: String,
     pub hash: String,
     pub release_notes: String,

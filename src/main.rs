@@ -3,6 +3,7 @@ mod state;
 mod router;
 mod api;
 mod utils;
+mod dto;
 
 use std::sync::Arc;
 
@@ -19,10 +20,10 @@ use tracing_subscriber::fmt;
 #[tokio::main]
 async fn main() {
     let config = Config::from_file("./config.toml").expect("Error reading config");
-    let port = config.server.port;
-    let filter = config.server.log_level.as_str();
+    let port = config.api.port;
+    let filter = config.api.log_level.as_str();
 
-    match config.server.log_format {
+    match config.api.log_format {
         LogFormat::Plain => {
             let subscriber = fmt()
                 .with_env_filter(filter)
@@ -52,7 +53,7 @@ async fn main() {
     let addr = format!("0.0.0.0:{}", port);
     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
 
-    info!("Starting server on {}", addr);
+    info!("Starting API server on {}", addr);
 
     axum::serve(listener, router).await.unwrap();
 }
