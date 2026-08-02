@@ -1,3 +1,4 @@
+use crate::error::Result;
 use std::path::{Path, PathBuf};
 use serde::Deserialize;
 
@@ -10,7 +11,7 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Self, Box<dyn std::error::Error>> {
+    pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Config> {
         let content = std::fs::read_to_string(path)?;
         let raw: RawConfig = toml::from_str(&content)?;
         Ok(raw.into_config())
