@@ -2,6 +2,7 @@ use crate::config::{Config, SeasonManifest};
 use std::sync::Arc;
 use std::path::PathBuf;
 
+#[derive(Debug)]
 pub struct ServiceState {
     pub config: Config,
     pub season_path: PathBuf,

@@ -9,6 +9,8 @@ use serde::Serialize;
 use std::{fmt, result};
 
 pub type Result<T> = result::Result<T, ServiceError>;
+pub type JsonResult<T> = result::Result<Json<T>, ServiceError>;
+pub type FileStreamResult = result::Result<axum::response::Response, ServiceError>;
 
 // JSON Response error DTO (what actual user sees)
 #[derive(Debug, Serialize)]
@@ -49,6 +51,12 @@ impl fmt::Display for ServiceError {
             Self::Parse(e) => write!(f, "Failed to parse config or manifest: {}", e),
             Self::Io(e) => write!(f, "I/O error: {}", e),
         }
+    }
+}
+
+impl IntoResponse for ServiceError {
+    fn into_response(self) -> Response {
+        AppError::from(self).into_response()
     }
 }
 

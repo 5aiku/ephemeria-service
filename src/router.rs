@@ -7,7 +7,7 @@ pub fn create_router(state: SharedState) -> Router {
     Router::new()
         .route("/health", get(api::check_health))
         .route("/api/v1/server/manifest", get(api::server::manifest))
-        // .route("/api/v1/server/instance", get(api::server::instance))
+        .route("/api/v1/server/instance", get(api::server::instance))
         // .route("/api/v1/server/status", get(api::server::status))
 
         // .route("/api/v1/launcher/version", get(api::launcher::version))

@@ -19,6 +19,8 @@ use axum::{routing::get, Router};
 
 use tracing::{debug, info, warn, error};
 use tracing_subscriber::fmt;
+use tracing_subscriber::fmt::format::FmtSpan;
+// use tracing_subscriber::fmt::{self, format::FmtSpan};
 
 #[tokio::main]
 async fn main() -> ExitCode {
@@ -42,7 +44,7 @@ async fn bootstrap() -> Result<()> {
     init_logger(&config.api.log_level, &config.api.log_format);
     let active_season = &config.minecraft.active_season;
 
-    info!("Config loaded. Active season: {}", active_season);
+    info!("Config loaded. Active season: '{}'", active_season);
     debug!("{:?}", config);
 
     let season_path = config.minecraft.sync_dir.join(active_season);
@@ -91,6 +93,9 @@ fn init_logger(level: &LogLevel, format: &LogFormat) {
     match format {
         LogFormat::Plain => {
             let subscriber = fmt()
+                .compact()
+                .with_target(false)
+                .with_span_events(FmtSpan::NONE)
                 .with_env_filter(filter)
                 .finish();
             tracing::subscriber::set_global_default(subscriber)
@@ -100,6 +105,12 @@ fn init_logger(level: &LogLevel, format: &LogFormat) {
         LogFormat::Json => {
             let subscriber = fmt()
                 .json()
+                .with_file(true)
+                .with_line_number(true)
+                .with_thread_ids(true)
+                .with_span_events(FmtSpan::NEW | FmtSpan::CLOSE)
+                .with_current_span(true)
+                .with_span_list(true)
                 .with_env_filter(filter)
                 .finish();
             tracing::subscriber::set_global_default(subscriber)

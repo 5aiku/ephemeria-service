@@ -1,6 +1,19 @@
 use serde::Serialize;
 
 #[derive(Debug, Serialize)]
+pub struct HealthStatusResponse {
+    pub status: Status,
+}
+
+// For future internal services like db connections
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum Status {
+    Up,
+    Down,
+}
+
+#[derive(Debug, Serialize)]
 pub struct ManifestResponse {
     pub season_name: String,
     pub season_description: String,
