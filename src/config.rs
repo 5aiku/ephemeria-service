@@ -164,16 +164,11 @@ impl RawConfig {
             if dev_mode { LogLevel::Debug } else { LogLevel::Info }
         });
 
-        let allowed_origins = self.cors.allowed_origins.unwrap_or_else(|| {
-            if dev_mode {
-                vec![
-                    "http://localhost:*".to_string(),
-                    "tauri://localhost".to_string(),
-                ]
-            } else {
-                Vec::new()
-            }
-        });
+        let mut allowed_origins = self.cors.allowed_origins.unwrap_or(Vec::new());
+        if dev_mode {
+            allowed_origins.push("http://localhost:*".to_string());
+            allowed_origins.push("tauri://localhost".to_string());
+        }
 
         Config {
             api: ApiConfig {

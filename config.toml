@@ -2,8 +2,13 @@
 port = 3000
 dev_mode = true
 log_format = "plain"
-log_level = "info"
+log_level = "debug"
 
 [minecraft]
 sync_dir = "./seasons"
 active_season = "kinetic"
+
+[cors]
+allowed_origins = [
+    "safds4343"
+]

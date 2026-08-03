@@ -1,11 +1,13 @@
 use crate::config::SeasonManifest;
 use crate::error::Result;
 use tracing::{debug, info, warn, error};
+use axum::http::{Method, header, HeaderValue, Uri};
 use sha2::{Digest, Sha256};
 use std::fmt::Write;
 use std::fs::{self, File};
 use std::io::{self, Read};
 use std::path::{Path, PathBuf};
+use tower_http::cors::{CorsLayer, AllowOrigin, Any};
 
 pub fn load_season(season_path: &PathBuf) -> Result<SeasonManifest> {
     let manifest_path = season_path.join("season.toml");
@@ -68,5 +70,23 @@ pub async fn shutdown_signal() {
     tokio::select! {
         _ = ctrl_c => info!("Recieved Ctrl + C event, shutting down the server..."),
         _ = terminate => info!("Recieved SIGTERM, shutting down the server..."),
+    }
+}
+
+pub fn validate_origin(origin_str: &str) -> Option<HeaderValue> {
+    let uri = origin_str.parse::<Uri>().ok()?;
+
+    let is_valid = uri.scheme().is_some()
+        && uri.authority().is_some()
+        && (uri.path() == "" || uri.path() == "/");
+
+    if is_valid {
+        origin_str.parse::<HeaderValue>().ok()
+    } else {
+        warn!(
+            "Invalid CORS origin format: '{}')",
+            origin_str
+        );
+        None
     }
 }
