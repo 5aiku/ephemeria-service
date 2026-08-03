@@ -1,6 +1,5 @@
-use tracing::{debug, info, warn, error};
 use axum::{
-    http::{Method, header, HeaderValue, Uri},
+    http::{Method, HeaderValue},
     routing::get,
     Router
 };

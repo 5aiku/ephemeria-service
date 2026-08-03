@@ -1,4 +1,6 @@
-use tracing::{debug, info, warn, error};
+#![allow(dead_code)]
+
+use tracing::error;
 
 use axum::{
     response::{IntoResponse, Response, Json},

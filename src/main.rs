@@ -15,9 +15,8 @@ use crate::state::*;
 use crate::utils::*;
 use crate::error::{Result, ServiceError};
 
-use axum::{routing::get, Router};
 
-use tracing::{debug, info, warn, error};
+use tracing::{debug, info};
 use tracing_subscriber::fmt;
 use tracing_subscriber::fmt::format::FmtSpan;
 // use tracing_subscriber::fmt::{self, format::FmtSpan};

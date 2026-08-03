@@ -1,13 +1,12 @@
 use crate::config::SeasonManifest;
 use crate::error::Result;
-use tracing::{debug, info, warn, error};
-use axum::http::{Method, header, HeaderValue, Uri};
+use tracing::{debug, info, warn};
+use axum::http::{HeaderValue, Uri};
 use sha2::{Digest, Sha256};
 use std::fmt::Write;
 use std::fs::{self, File};
-use std::io::{self, Read};
+use std::io::Read;
 use std::path::{Path, PathBuf};
-use tower_http::cors::{CorsLayer, AllowOrigin, Any};
 
 pub fn load_season(season_path: &PathBuf) -> Result<SeasonManifest> {
     let manifest_path = season_path.join("season.toml");

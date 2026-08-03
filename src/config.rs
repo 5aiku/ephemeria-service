@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use crate::error::Result;
 use std::path::{Path, PathBuf};
 use serde::Deserialize;

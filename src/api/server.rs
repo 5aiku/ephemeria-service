@@ -1,16 +1,12 @@
 use crate::state::SharedState;
-use crate::error::{JsonResult, FileStreamResult, ServiceError};
+use crate::error::{JsonResult, FileStreamResult};
 use crate::dto::*;
 use crate::api::*;
 
-use tracing::{debug, info, warn, error};
 use axum::{
-    body::Body,
-    http::{header, HeaderMap, StatusCode},
     extract::State,
-    response::{Response, IntoResponse, Json},
+    response::Json,
 };
-use serde_json::json;
 
 #[tracing::instrument(name = "get_manifest", skip(state))]
 pub async fn manifest(State(state): State<SharedState>) -> JsonResult<ManifestResponse> {

@@ -1,32 +1,26 @@
 pub mod server;
 pub mod launcher;
 
-pub use server::*;
-pub use launcher::*;
 
 use crate::dto::*;
 use crate::error::{JsonResult, FileStreamResult, ServiceError};
 use std::path::Path;
 use tokio::fs::File;
 use tokio_util::io::ReaderStream;
-use tracing::{debug, info, warn, error};
+use tracing::{info, error};
 use axum::{
-    extract::State,
-    response::{Response, IntoResponse, Json},
+    response::{Response, Json},
     http::{header, StatusCode},
     body::Body,
 };
-use serde_json::json;
 
-use crate::state::SharedState;
 
-#[tracing::instrument(name = "check_health", skip(state))]
-pub async fn check_health(State(state): State<SharedState>) -> JsonResult<HealthStatusResponse> {
+#[tracing::instrument(name = "check_health")]
+pub async fn check_health() -> JsonResult<HealthStatusResponse> {
     Ok(Json(HealthStatusResponse {
         status: Status::Up,
     }))
 }
-
 
 pub async fn stream_file(file_path: &Path) -> FileStreamResult {
     let download_name = file_path
