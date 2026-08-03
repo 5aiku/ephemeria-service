@@ -29,7 +29,7 @@ pub async fn manifest(State(state): State<SharedState>) -> JsonResult<ManifestRe
 }
 
 #[tracing::instrument(name = "get_instance", skip(state))]
-pub async fn instance(State(state): State<SharedState>) -> FileStreamResult {
+pub async fn mods(State(state): State<SharedState>) -> FileStreamResult {
     let mods_path = state.season_path.join("mods.zip");
 
     let file = match File::open(&mods_path).await {
