@@ -1,8 +1,6 @@
 services:
   api:
-    build:
-      context: ../../
-      dockerfile: crates/ephemeria-service/Dockerfile
+    build: .
     container_name: ephemeria-service
     restart: unless-stopped
     network_mode: "host"
