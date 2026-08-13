@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Alexander Galay <alexander.galay@proton.me>
+
 use crate::config::{Config, SeasonManifest};
 use std::sync::Arc;
 use std::path::PathBuf;

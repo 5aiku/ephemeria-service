@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Alexander Galay <alexander.galay@proton.me>
+
 #![allow(dead_code)]
 
 use tracing::error;
@@ -7,19 +10,13 @@ use axum::{
     http::StatusCode,
 };
 
-use serde::Serialize;
 use std::{fmt, result};
+
+use ephemeria_core::dto::error::ErrorResponse;
 
 pub type Result<T> = result::Result<T, ServiceError>;
 pub type JsonResult<T> = result::Result<Json<T>, ServiceError>;
 pub type FileStreamResult = result::Result<axum::response::Response, ServiceError>;
-
-// JSON Response error DTO (what actual user sees)
-#[derive(Debug, Serialize)]
-pub struct ErrorResponse {
-    pub error_code: String,
-    pub message: String,
-}
 
 // Internal API error
 // Used only in internal functions

@@ -1,0 +1,11 @@
+services:
+  api:
+    build:
+      context: ../../
+      dockerfile: crates/ephemeria-service/Dockerfile
+    container_name: ephemeria-service
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - ./config.toml:/app/config.toml:ro
+      - ./seasons:/app/seasons:ro

@@ -14,10 +14,6 @@ Returns information about the server and game instance in JSON format
 }
 ```
 
-## GET /api/v1/server/instance
-
-Hosts game's instance file to be downloaded. For example 'default.zip'
-
 ## GET /api/v1/server/status
 
 Returns current status information about the server in JSON format
@@ -55,4 +51,3 @@ Hosts latest launcher to be downloaded.
 ## POST /api/v1/server/command
 
 RCON command for authorized only
-

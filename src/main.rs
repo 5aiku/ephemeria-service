@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Alexander Galay <alexander.galay@proton.me>
+
 mod config;
 mod error;
 mod state;
 mod router;
 mod api;
 mod utils;
-mod dto;
 
 use std::sync::Arc;
 use std::process::ExitCode;

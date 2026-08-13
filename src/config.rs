@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Alexander Galay <alexander.galay@proton.me>
+
 #![allow(dead_code)]
 
 use crate::error::Result;
@@ -38,16 +41,6 @@ pub struct MinecraftConfig {
     pub active_season: String,
     #[serde(default = "default_sync_path")]
     pub sync_dir: PathBuf,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct SeasonManifest {
-    pub name: String,
-    pub description: String,
-    pub game_version: String,
-    pub java_version: String,
-    pub server_ip: String,
-    pub server_port: u16,
 }
 
 pub fn default_sync_path() -> PathBuf {
@@ -184,4 +177,15 @@ impl RawConfig {
             rcon: self.rcon,
         }
     }
+}
+
+#[derive(Debug, Deserialize)]
+pub struct SeasonManifest {
+    pub name: String,
+    pub description: String,
+    pub game_version: String,
+    pub java_version: String,
+    pub mod_loader: String,
+    pub server_ip: String,
+    pub server_port: u16,
 }

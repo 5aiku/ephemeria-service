@@ -1,8 +1,10 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Alexander Galay <alexander.galay@proton.me>
+
 pub mod server;
 pub mod launcher;
 
-
-use crate::dto::*;
+use ephemeria_core::dto::api::*;
 use crate::error::{JsonResult, FileStreamResult, ServiceError};
 use std::path::Path;
 use tokio::fs::File;
