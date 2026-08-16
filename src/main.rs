@@ -57,16 +57,18 @@ async fn bootstrap() -> Result<()> {
 
     let season_manifest = load_season(&season_path)?;
 
-    let mods_zip_path = season_path.join("mods.zip");
+    let mods_zip_path = season_path.join("mods");
     if !mods_zip_path.exists() {
         return Err(
             ServiceError::FileNotFound(mods_zip_path.to_string_lossy().to_string())
         );
     }
 
-    let mods_hash = calculate_file_hash(&mods_zip_path)?;
-    info!("Mods hash calculated");
-    debug!("Mods hash: {}", mods_hash);
+    let mods_hash = calculate_dir_hash(&mods_zip_path)?;
+    if let Some(ref hash) = mods_hash {
+	info!("Mods hash calculated");
+	debug!("Mods hash: {}", hash);
+    }
 
     let state: SharedState = Arc::new(ServiceState {
         config,

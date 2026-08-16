@@ -185,7 +185,7 @@ pub struct SeasonManifest {
     pub description: String,
     pub game_version: String,
     pub java_version: String,
-    pub mod_loader: String,
+    pub mod_loader: Option<String>,
     pub server_ip: String,
     pub server_port: u16,
 }

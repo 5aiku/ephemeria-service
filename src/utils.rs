@@ -5,7 +5,7 @@ use crate::config::SeasonManifest;
 use crate::error::Result;
 use tracing::{debug, info, warn};
 use axum::http::{HeaderValue, Uri};
-use sha2::{Digest, Sha256};
+use sha1::{Sha1, Digest};
 use std::fmt::Write;
 use std::fs::{self, File};
 use std::io::Read;
@@ -23,9 +23,46 @@ pub fn load_season(season_path: &PathBuf) -> Result<SeasonManifest> {
     Ok(season_manifest)
 }
 
+pub fn calculate_dir_hash(path: impl AsRef<Path>) -> Result<Option<String>> {
+    let dir_path = path.as_ref();
+
+    if !dir_path.exists() {
+        return Ok(None);
+    }
+
+    let mut files: Vec<_> = fs::read_dir(dir_path)?
+        .filter_map(|e| e.ok())
+        .filter(|e| e.path().extension().is_some_and(|ext| ext == "jar"))
+        .collect();
+
+    if files.is_empty() {
+        return Ok(None);
+    }
+
+    files.sort_by_key(|e| e.file_name());
+
+    let mut combined_hashes = String::new();
+
+    for entry in files {
+        let file_hash = calculate_file_hash(entry.path())?;
+        combined_hashes.push_str(&file_hash);
+    }
+
+    let mut final_hasher = Sha1::new();
+    final_hasher.update(combined_hashes.as_bytes());
+    let hash = final_hasher.finalize();
+
+    let mut result = String::with_capacity(40);
+    for byte in hash {
+        write!(&mut result, "{:02x}", byte).expect("write! to String never fails, right?");
+    }
+
+    Ok(Some(result))
+}
+
 pub fn calculate_file_hash(path: impl AsRef<Path>) -> Result<String> {
     let mut file = File::open(path)?;
-    let mut hasher = Sha256::new();
+    let mut hasher = Sha1::new();
     let mut buffer = [0; 8192];
 
     loop {
@@ -40,9 +77,7 @@ pub fn calculate_file_hash(path: impl AsRef<Path>) -> Result<String> {
 
     let hash = hasher.finalize();
 
-    // 7 bytes for 'sha256:' + 64 bytes for actual hash = 71 bytes
-    let mut result = String::with_capacity(71);
-    result.push_str("sha256:");
+    let mut result = String::with_capacity(64);
 
     for byte in hash {
         write!(&mut result, "{:02x}", byte).expect("write! to String never fails, right?");

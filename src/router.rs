@@ -26,9 +26,9 @@ pub fn create_router(state: SharedState) -> Router {
         .allow_headers(Any);
 
     Router::new()
-        .route("/health", get(api::check_health))
-        .route("/api/v1/server/manifest", get(api::server::manifest))
-        .route("/api/v1/server/mods", get(api::server::mods))
+        .route("/v1/health", get(api::check_health))
+        .route("/v1/server/manifest", get(api::server::manifest))
+        .route("/v1/server/mods", get(api::server::mods))
         // .route("/api/v1/server/status", get(api::server::status))
 
         // .route("/api/v1/launcher/version", get(api::launcher::version))

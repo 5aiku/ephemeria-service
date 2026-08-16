@@ -10,7 +10,7 @@ pub struct ServiceState {
     pub config: Config,
     pub season_path: PathBuf,
     pub season_manifest: SeasonManifest,
-    pub mods_hash: String,
+    pub mods_hash: Option<String>,
 }
 
 pub type SharedState = Arc<ServiceState>;
