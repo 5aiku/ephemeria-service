@@ -26,9 +26,3 @@ pub async fn manifest(State(state): State<SharedState>) -> JsonResult<ManifestRe
         server_port: season.server_port.clone(),
     }))
 }
-
-#[tracing::instrument(name = "get_mods", skip(state))]
-pub async fn mods(State(state): State<SharedState>) -> FileStreamResult {
-    let mods_path = state.season_path.join("mods.zip");
-    stream_file(&mods_path).await
-}

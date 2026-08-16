@@ -57,14 +57,9 @@ async fn bootstrap() -> Result<()> {
 
     let season_manifest = load_season(&season_path)?;
 
-    let mods_zip_path = season_path.join("mods");
-    if !mods_zip_path.exists() {
-        return Err(
-            ServiceError::FileNotFound(mods_zip_path.to_string_lossy().to_string())
-        );
-    }
+    let mods_path = season_path.join("mods");
 
-    let mods_hash = calculate_dir_hash(&mods_zip_path)?;
+    let mods_hash = calculate_dir_hash(&mods_path)?;
     if let Some(ref hash) = mods_hash {
 	info!("Mods hash calculated");
 	debug!("Mods hash: {}", hash);
